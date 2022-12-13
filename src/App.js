@@ -1,23 +1,32 @@
 import logo from './logo.svg';
 import './App.css';
+import { useSelector, useDispatch } from 'react-redux';
+import {add, RemoveTask} from "./Redux/Reducer"
+import { useState } from 'react';
 
 function App() {
+
+ const Tasks = useSelector(state => state.Tasks.list )  
+
+ const dispatch = useDispatch()
+
+ const [task, setTask] = useState("")
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input type="text" onChange={(e)=> setTask(e.target.value)}/>
+      <button onClick={()=> dispatch(add({titre : task, status : false}))}>Add</button>
+      {
+        Tasks.map(item =>(
+          <>
+          <h4> {item.titre} </h4>
+          <button onClick={()=> dispatch(RemoveTask(item.titre))}>delete</button>
+          </>
+        ))
+      }
+
     </div>
   );
 }
